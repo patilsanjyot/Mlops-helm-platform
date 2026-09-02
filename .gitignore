@@ -5,3 +5,9 @@ __pycache__/
 .idea/
 .vscode/
 .DS_Store
+
+# Terraform generated files
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
