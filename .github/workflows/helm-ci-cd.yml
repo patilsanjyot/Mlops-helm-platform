@@ -1,0 +1,57 @@
+name: Helm CI/CD
+
+on:
+  pull_request:
+    paths:
+      - "helm/**"
+      - ".github/workflows/helm-ci-cd.yml"
+
+  push:
+    branches:
+      - main
+    paths:
+      - "helm/**"
+      - ".github/workflows/helm-ci-cd.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  helm:
+    name: Validate and Package Helm Chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+
+      - name: Helm lint
+        run: |
+          helm lint ./helm/ml-api -f ./helm/ml-api/values-dev.yaml
+          helm lint ./helm/ml-api -f ./helm/ml-api/values-staging.yaml
+          helm lint ./helm/ml-api -f ./helm/ml-api/values-prod.yaml
+
+      - name: Render Helm charts
+        run: |
+          helm template ml-api-dev ./helm/ml-api \
+            -f ./helm/ml-api/values-dev.yaml > dev-rendered.yaml
+
+          helm template ml-api-staging ./helm/ml-api \
+            -f ./helm/ml-api/values-staging.yaml > staging-rendered.yaml
+
+          helm template ml-api-prod ./helm/ml-api \
+            -f ./helm/ml-api/values-prod.yaml > prod-rendered.yaml
+
+      - name: Package Helm chart
+        run: |
+          mkdir -p dist
+          helm package ./helm/ml-api --destination ./dist
+
+      - name: Upload packaged chart
+        uses: actions/upload-artifact@v4
+        with:
+          name: ml-api-helm-chart
+          path: dist/*.tgz
