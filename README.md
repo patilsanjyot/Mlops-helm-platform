@@ -881,3 +881,17 @@ The complete idea behind the project is:
 The key idea is to keep the deployment **reusable, environment-aware, testable, and automated** without making the project more complicated than the actual requirement.
 
 For a real production implementation, the same approach could be extended with managed Kubernetes, external secret management, image scanning, monitoring, GitOps-based deployment, and cloud authentication through OIDC.
+
+## Validation Evidence
+
+### Local ML API Response
+
+The ML API was successfully deployed on Minikube and verified through the local Swagger API.
+
+![ML API Response](docs/api-response.png)
+
+### Health Check
+
+The `/health` endpoint returned a healthy status successfully.
+
+![Health Check](docs/health-check.png)
