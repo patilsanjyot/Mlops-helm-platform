@@ -888,10 +888,10 @@ For a real production implementation, the same approach could be extended with m
 
 The ML API was successfully deployed on Minikube and verified through the local Swagger API.
 
-![ML API Response](docs/api-response.png)
+![ML API Response](docs/screenshots/api-response.png)
 
 ### Health Check
 
 The `/health` endpoint returned a healthy status successfully.
 
-![Health Check](docs/health-check.png)
+![Health Check](docs/screenshots/health-check.png)
